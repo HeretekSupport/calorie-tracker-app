@@ -137,6 +137,11 @@ class CalorieTracker {
   get workouts() {
     return this.#workouts;
   }
+  //SETTERS
+  set calorieLimit(limitNum) {
+    limitNum ? (this.#calorieLimit = limitNum) : null;
+    this.#displayCalorieLimit();
+  }
   addMeal(meal) {
     this.#meals.push(meal);
     this.#totalCalories += meal.calories;
@@ -174,10 +179,7 @@ class CalorieTracker {
     this.#renderStats();
   }
 
-  setLimit(limitNum) {
-    limitNum ? (this.#calorieLimit = limitNum) : null;
-    this.#displayCalorieLimit();
-  }
+
 }
 
 export { CalorieTracker };

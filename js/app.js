@@ -1,7 +1,6 @@
 import { Meal, Workout } from './Item.js';
 import { CalorieTracker } from './calorietracker.js';
 
-
 class App {
   #tracker;
 
@@ -21,7 +20,6 @@ class App {
     document
       .querySelector('#workout-items')
       .addEventListener('click', this.#removeItem.bind(this, 'workout'));
-
     document
       .querySelector('#filter-meals')
       .addEventListener('keyup', this.#filterItems.bind(this, 'meal'));
@@ -31,6 +29,7 @@ class App {
     document
       .querySelector('#reset')
       .addEventListener('click', this.#reset.bind(this));
+    document.querySelector('#limit-form').addEventListener('submit', this.#setDailyLimit.bind(this));
   }
 
   #newItem(type, e) {
@@ -110,6 +109,17 @@ class App {
     document.querySelector('#meal-items').innerHTML = '';
     document.querySelector('#workout-items').innerHTML = '';
     this.#resetFormInputs();
+  }
+  #setDailyLimit(e){
+    e.preventDefault();
+
+    const limit = document.querySelector('#limit').value;
+    
+    if (limit === '' || +limit <= 0){
+      alert('Please enter a valid positive number for the Daily Calorie Limit');
+      return
+    }
+    this.#tracker.calorieLimit = limit;
   }
 }
 
