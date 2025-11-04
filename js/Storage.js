@@ -66,7 +66,7 @@ class Storage {
     workouts = workouts.filter((x) => x.id !== workoutID);
     localStorage.setItem('workouts', JSON.stringify(workouts));
   }
-  static clearStorage(){
+  static clearStorage() {
     localStorage.removeItem('meals');
     localStorage.removeItem('workouts');
     localStorage.removeItem('totalCalories');
