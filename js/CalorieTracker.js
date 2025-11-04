@@ -1,5 +1,7 @@
+import { Storage } from "./Storage.js";
+
 class CalorieTracker {
-  #calorieLimit = 2000;
+  #calorieLimit = Storage.getCalorieLimit();
   #totalCalories = 0;
   #meals = [];
   #workouts = [];
@@ -139,8 +141,15 @@ class CalorieTracker {
   }
   //SETTERS
   set calorieLimit(limitNum) {
-    limitNum ? (this.#calorieLimit = limitNum) : null;
-    this.#displayCalorieLimit();
+    //limitNum ? (this.#calorieLimit = limitNum) : null;
+    if (!limitNum || isNaN(limitNum)) {
+        return;
+    } else {
+        this.#calorieLimit = limitNum;
+        Storage.storeCalorieLimit(limitNum);
+    }
+    this.#renderStats();
+
   }
   addMeal(meal) {
     this.#meals.push(meal);
