@@ -56,7 +56,7 @@ class CalorieTracker {
     const mealList = document.querySelector('#meal-items');
     const newMeal = document.createElement('div');
     newMeal.innerHTML = `
-    <div class="card my-2">
+    <div class="card my-2" data-id="${meal.id}">
       <div class="card-body">
         <div class="d-flex align-items-center justify-content-between">
           <h4 class="mx-1">${meal.name}</h4>
@@ -75,9 +75,9 @@ class CalorieTracker {
   #displayNewWorkout(workout) {
     const workoutList = document.querySelector('#workout-items');
     const newWorkout = document.createElement('div');
-    
+
     newWorkout.innerHTML = `
-    <div class="card my-2">
+    <div class="card my-2" data-id="${workout.id}">
       <div class="card-body">
         <div class="d-flex align-items-center justify-content-between">
           <h4 class="mx-1">${workout.name}</h4>
@@ -160,7 +160,7 @@ class CalorieTracker {
   }
 
   removeWorkout(workoutID) {
-    this.#totalCalories -= this.#workouts.find(
+    this.#totalCalories += this.#workouts.find(
       (workout) => workout.id === workoutID
     ).calories;
     this.#workouts = this.#workouts.filter((x) => x.id !== workoutID);
@@ -207,6 +207,12 @@ class App {
     document
       .querySelector('#workout-form')
       .addEventListener('submit', this.#newItem.bind(this, 'workout'));
+    document
+      .querySelector('#meal-items')
+      .addEventListener('click', this.#removeItem.bind(this, 'meal'));
+    document
+      .querySelector('#workout-items')
+      .addEventListener('click', this.#removeItem.bind(this, 'workout'));
   }
 
   #newItem(type, e) {
@@ -235,7 +241,24 @@ class App {
         break;
     }
   }
+  #removeItem(type, e) {
+    if (e.target.classList.contains('fa-xmark') || e.target.classList.contains('delete')){
+      const card = e.target.closest('.card');
+      const toRemoveId = card.getAttribute('data-id');
 
+      card.remove();
+
+      switch (type){
+        case 'meal':
+          this.#tracker.removeMeal(toRemoveId);
+          break;
+        case 'workout':
+          this.#tracker.removeWorkout(toRemoveId);
+          break;
+      }
+
+    }
+  }
   //HELPERS
   #resetFormInputs(formId, inputItemType) {
     const form = document.querySelector(`#${formId}`);
