@@ -114,7 +114,7 @@ class App {
 
     const limit = document.querySelector('#limit').value;
     
-    if (limit === '' || +limit <= 0){
+    if (limit === '' || +limit <= 0 || isNaN(limit)){
       alert('Please enter a valid positive number for the Daily Calorie Limit');
       return
     }
