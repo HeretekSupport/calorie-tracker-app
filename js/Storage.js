@@ -26,7 +26,6 @@ class Storage {
   static storeTotalCalories(totalCalories) {
     localStorage.setItem('totalCalories', totalCalories);
   }
-
   static getMealList() {
     let meals;
 
@@ -66,6 +65,11 @@ class Storage {
     let workouts = this.getWorkoutList();
     workouts = workouts.filter((x) => x.id !== workoutID);
     localStorage.setItem('workouts', JSON.stringify(workouts));
+  }
+  static clearStorage(){
+    localStorage.removeItem('meals');
+    localStorage.removeItem('workouts');
+    localStorage.removeItem('totalCalories', 0);
   }
 }
 

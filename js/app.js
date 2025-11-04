@@ -7,8 +7,9 @@ class App {
 
   constructor() {
     this.#tracker = new CalorieTracker();
-
-    //Add all event listeners here
+    this.#addEventListeners();
+  }
+  #addEventListeners() {
     document
       .querySelector('#meal-form')
       .addEventListener('submit', this.#newItem.bind(this, 'meal')); //Remember, if we don't bind the THIS object, it'll belong to the callback's context
@@ -34,7 +35,6 @@ class App {
       .querySelector('#limit-form')
       .addEventListener('submit', this.#setDailyLimit.bind(this));
   }
-
   #newItem(type, e) {
     e.preventDefault();
 

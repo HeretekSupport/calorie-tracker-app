@@ -7,6 +7,7 @@ class CalorieTracker {
   #workouts = Storage.getWorkoutList();
 
   constructor() {
+    this.#loadTotalCalories();
     this.#renderItems();
     this.#renderStats();
   }
@@ -110,6 +111,14 @@ class CalorieTracker {
     this.#displayCaloriesRemaining();
     this.#renderProgressBar();
   }
+  #loadTotalCalories() {
+    const consumed = this.#meals.reduce((acc, meal) => acc + meal.calories, 0);
+    const burned = this.#workouts.reduce(
+      (acc, workout) => acc + workout.calories,
+      0
+    );
+    this.#totalCalories = consumed - burned;
+  }
 
   //HELPERS
   #setWarningClass(element, truthy) {
@@ -186,6 +195,7 @@ class CalorieTracker {
     this.#meals.length = 0;
     this.#workouts.length = 0;
     this.#totalCalories = 0;
+    Storage.clearStorage();
     this.#renderStats();
   }
 }
