@@ -1,18 +1,14 @@
-import { Storage } from "./Storage.js";
+import { Storage } from './Storage.js';
 
 class CalorieTracker {
   #calorieLimit = Storage.getCalorieLimit();
   #totalCalories = 0;
-  #meals = [];
-  #workouts = [];
+  #meals = Storage.getMealList();
+  #workouts = Storage.getWorkoutList();
 
   constructor() {
-    this.#displayCaloriesTotal();
-    this.#displayCalorieLimit();
-    this.#displayCaloriesConsumed();
-    this.#displayCaloriesBurned();
-    this.#displayCaloriesRemaining();
-    this.#renderProgressBar();
+    this.#renderItems();
+    this.#renderStats();
   }
 
   //PRIVATE METHODS
@@ -102,6 +98,10 @@ class CalorieTracker {
 
     barEl.style.width = `${width}%`;
   }
+  #renderItems() {
+    this.#meals.forEach((meal) => this.#displayNewMeal(meal));
+    this.#workouts.forEach((workout) => this.#displayNewWorkout(workout));
+  }
   #renderStats() {
     this.#displayCalorieLimit();
     this.#displayCaloriesTotal();
@@ -143,13 +143,12 @@ class CalorieTracker {
   set calorieLimit(limitNum) {
     //limitNum ? (this.#calorieLimit = limitNum) : null;
     if (!limitNum || isNaN(limitNum)) {
-        return;
+      return;
     } else {
-        this.#calorieLimit = limitNum;
-        Storage.storeCalorieLimit(limitNum);
+      this.#calorieLimit = limitNum;
+      Storage.storeCalorieLimit(limitNum);
     }
     this.#renderStats();
-
   }
   addMeal(meal) {
     this.#meals.push(meal);
@@ -170,6 +169,7 @@ class CalorieTracker {
       (meal) => meal.id === mealID
     ).calories;
     this.#meals = this.#meals.filter((x) => x.id !== mealID);
+    Storage.removeMeal(mealID);
     this.#renderStats();
   }
 
@@ -178,6 +178,7 @@ class CalorieTracker {
       (workout) => workout.id === workoutID
     ).calories;
     this.#workouts = this.#workouts.filter((x) => x.id !== workoutID);
+    Storage.removeWorkout(workoutID);
     this.#renderStats();
   }
 
@@ -187,8 +188,6 @@ class CalorieTracker {
     this.#totalCalories = 0;
     this.#renderStats();
   }
-
-
 }
 
 export { CalorieTracker };

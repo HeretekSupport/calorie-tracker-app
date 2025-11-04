@@ -27,10 +27,46 @@ class Storage {
     localStorage.setItem('totalCalories', totalCalories);
   }
 
-  static getMealList() {}
-  static storeMeal() {}
-  static getWorkoutList() {}
-  static storeWorkout() {}
+  static getMealList() {
+    let meals;
+
+    localStorage.getItem('meals') === null
+      ? (meals = [])
+      : (meals = JSON.parse(localStorage.getItem('meals')));
+
+    return meals;
+  }
+  static getWorkoutList() {
+    let workouts;
+
+    localStorage.getItem('workouts') === null
+      ? (workouts = [])
+      : (workouts = JSON.parse(localStorage.getItem('workouts')));
+
+    return workouts;
+  }
+  static storeMeal(meal) {
+    const meals = this.getMealList();
+    meals.push(meal);
+
+    localStorage.setItem('meals', JSON.stringify(meals));
+  }
+  static storeWorkout(workout) {
+    const workouts = this.getWorkoutList();
+    workouts.push(workout);
+
+    localStorage.setItem('workouts', JSON.stringify(workouts));
+  }
+  static removeMeal(mealID) {
+    let meals = this.getMealList();
+    meals = meals.filter((x) => x.id !== mealID);
+    localStorage.setItem('meals', JSON.stringify(meals));
+  }
+  static removeWorkout(workoutID) {
+    let workouts = this.getWorkoutList();
+    workouts = workouts.filter((x) => x.id !== workoutID);
+    localStorage.setItem('workouts', JSON.stringify(workouts));
+  }
 }
 
 export { Storage };

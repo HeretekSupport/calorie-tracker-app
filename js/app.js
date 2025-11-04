@@ -1,5 +1,6 @@
 import { Meal, Workout } from './Item.js';
 import { CalorieTracker } from './calorietracker.js';
+import { Storage } from './Storage.js';
 
 class App {
   #tracker;
@@ -29,7 +30,9 @@ class App {
     document
       .querySelector('#reset')
       .addEventListener('click', this.#reset.bind(this));
-    document.querySelector('#limit-form').addEventListener('submit', this.#setDailyLimit.bind(this));
+    document
+      .querySelector('#limit-form')
+      .addEventListener('submit', this.#setDailyLimit.bind(this));
   }
 
   #newItem(type, e) {
@@ -49,11 +52,13 @@ class App {
         //+ is shorthand to turn the string into a number; Otherwise it'll just concat the value to the placeholder '0' and you end up with '0abc' value
         const newMeal = new Meal(itemName.value, +itemCals.value);
         this.#tracker.addMeal(newMeal);
+        Storage.storeMeal(newMeal);
         this.#resetFormInputs(`${type}-form`, type);
         break;
       case 'workout':
         const newWorkout = new Workout(itemName.value, +itemCals.value);
         this.#tracker.addWorkout(newWorkout);
+        Storage.storeWorkout(newWorkout);
         this.#resetFormInputs(`${type}-form`, type);
         break;
     }
@@ -71,9 +76,11 @@ class App {
       switch (type) {
         case 'meal':
           this.#tracker.removeMeal(toRemoveId);
+          Storage.storeTotalCalories(this.#tracker.totalCalories);
           break;
         case 'workout':
           this.#tracker.removeWorkout(toRemoveId);
+          Storage.storeTotalCalories(this.#tracker.totalCalories);
           break;
       }
     }
@@ -109,14 +116,14 @@ class App {
     document.querySelector('#meal-items').innerHTML = '';
     document.querySelector('#workout-items').innerHTML = '';
   }
-  #setDailyLimit(e){
+  #setDailyLimit(e) {
     e.preventDefault();
 
     const limit = document.querySelector('#limit').value;
-    
-    if (limit === '' || +limit <= 0 || isNaN(limit)){
+
+    if (limit === '' || +limit <= 0 || isNaN(limit)) {
       alert('Please enter a valid positive number for the Daily Calorie Limit');
-      return
+      return;
     }
     this.#tracker.calorieLimit = limit;
   }
