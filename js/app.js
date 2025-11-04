@@ -168,7 +168,10 @@ class CalorieTracker {
   }
 
   resetDay() {
-    //check for in-memory limit value
+    this.#meals.length = 0;
+    this.#workouts.length = 0;
+    this.#totalCalories = 0;
+    this.#renderStats();
   }
 
   setLimit(limitNum) {
@@ -213,6 +216,16 @@ class App {
     document
       .querySelector('#workout-items')
       .addEventListener('click', this.#removeItem.bind(this, 'workout'));
+
+    document
+      .querySelector('#filter-meals')
+      .addEventListener('keyup', this.#filterItems.bind(this, 'meal'));
+    document
+      .querySelector('#filter-workouts')
+      .addEventListener('keyup', this.#filterItems.bind(this, 'workout'));
+    document
+      .querySelector('#reset')
+      .addEventListener('click', this.#reset.bind(this));
   }
 
   #newItem(type, e) {
@@ -242,13 +255,16 @@ class App {
     }
   }
   #removeItem(type, e) {
-    if (e.target.classList.contains('fa-xmark') || e.target.classList.contains('delete')){
+    if (
+      e.target.classList.contains('fa-xmark') ||
+      e.target.classList.contains('delete')
+    ) {
       const card = e.target.closest('.card');
       const toRemoveId = card.getAttribute('data-id');
 
       card.remove();
 
-      switch (type){
+      switch (type) {
         case 'meal':
           this.#tracker.removeMeal(toRemoveId);
           break;
@@ -256,8 +272,21 @@ class App {
           this.#tracker.removeWorkout(toRemoveId);
           break;
       }
-
     }
+  }
+  #filterItems(type, e) {
+    const inputText = e.target.value.toLowerCase();
+
+    document.querySelectorAll(`#${type}-items .card`).forEach((item) => {
+      const itemName = item.querySelector('h4').textContent;
+      if (inputText === '') {
+        item.style.display = 'flex';
+      } else if (itemName.includes(inputText)) {
+        item.style.display = 'flex';
+      } else {
+        item.style.display = 'none';
+      }
+    });
   }
   //HELPERS
   #resetFormInputs(formId, inputItemType) {
@@ -269,6 +298,13 @@ class App {
         toggle: true,
       });
     }
+  }
+  #reset() {
+    this.#tracker.resetDay();
+
+    document.querySelector('#meal-items').innerHTML = '';
+    document.querySelector('#workout-items').innerHTML = '';
+    this.#resetFormInputs();
   }
 }
 
