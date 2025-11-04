@@ -69,7 +69,7 @@ class Storage {
   static clearStorage(){
     localStorage.removeItem('meals');
     localStorage.removeItem('workouts');
-    localStorage.removeItem('totalCalories', 0);
+    localStorage.removeItem('totalCalories');
   }
 }
 

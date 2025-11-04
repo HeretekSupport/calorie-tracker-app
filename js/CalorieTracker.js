@@ -161,6 +161,7 @@ class CalorieTracker {
   }
   addMeal(meal) {
     this.#meals.push(meal);
+    Storage.storeMeal(meal);
     this.#totalCalories += meal.calories;
     this.#displayNewMeal(meal);
     this.#renderStats();
@@ -168,6 +169,7 @@ class CalorieTracker {
 
   addWorkout(workout) {
     this.#workouts.push(workout);
+    Storage.storeWorkout(workout);
     this.#totalCalories -= workout.calories;
     this.#displayNewWorkout(workout);
     this.#renderStats();

@@ -52,13 +52,11 @@ class App {
         //+ is shorthand to turn the string into a number; Otherwise it'll just concat the value to the placeholder '0' and you end up with '0abc' value
         const newMeal = new Meal(itemName.value, +itemCals.value);
         this.#tracker.addMeal(newMeal);
-        Storage.storeMeal(newMeal);
         this.#resetFormInputs(`${type}-form`, type);
         break;
       case 'workout':
         const newWorkout = new Workout(itemName.value, +itemCals.value);
         this.#tracker.addWorkout(newWorkout);
-        Storage.storeWorkout(newWorkout);
         this.#resetFormInputs(`${type}-form`, type);
         break;
     }
