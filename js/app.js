@@ -108,7 +108,6 @@ class App {
 
     document.querySelector('#meal-items').innerHTML = '';
     document.querySelector('#workout-items').innerHTML = '';
-    this.#resetFormInputs();
   }
   #setDailyLimit(e){
     e.preventDefault();
