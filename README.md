@@ -2,4 +2,4 @@ A vanilla Javascript based calorie tracker web-app. The code here demonstrates O
 
 It's also a great learning tool for understanding the misery of not having a reactive framework to work with for the front-end. 
 
-![Trakker calorie tracking app demo Image](./images/Demo.png)
+![Trakker calorie tracking app demo Image](./images/demo.png)
