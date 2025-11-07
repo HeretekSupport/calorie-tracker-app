@@ -1,6 +1,10 @@
 import { Meal, Workout } from './Item.js';
 import { CalorieTracker } from './calorietracker.js';
 import { Storage } from './Storage.js';
+import '@fortawesome/fontawesome-free/js/all';
+import { Modal, Collapse } from 'bootstrap';
+import '../css/bootstrap.css';
+import '../css/style.css';
 
 class App {
   #tracker;
@@ -103,7 +107,7 @@ class App {
     form.reset();
     if (formId.includes('meal') || formId.includes('workout')) {
       const collapseItem = document.querySelector(`#collapse-${inputItemType}`);
-      const bootstrapCollapse = new bootstrap.Collapse(collapseItem, {
+      const bootstrapCollapse = new Collapse(collapseItem, {
         toggle: true,
       });
     }
